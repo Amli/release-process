@@ -1,0 +1,41 @@
+name: Manually Tag Commit
+
+on:
+  workflow_dispatch:
+    inputs:
+      commit_hash:
+        description: 'Commit hash to tag. Defaults to latest commit on main.'
+        required: false
+        default: ''
+      tag_label:
+        description: 'Tag label. Defaults to current date (YYYY-MM-DD).'
+        required: false
+        default: ''
+
+jobs:
+  add-tag:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up variables
+        id: vars
+        run: |
+          if [[ "${{ github.event.inputs.commit_hash }}" != "" ]]; then
+            COMMIT_HASH="${{ github.event.inputs.commit_hash }}"
+          else
+            COMMIT_HASH=$(git ls-remote https://github.com/${{ github.repository }} main | awk '{print $1}')
+          fi
+          if [[ "${{ github.event.inputs.tag_label }}" != "" ]]; then
+            TAG_LABEL="${{ github.event.inputs.tag_label }}"
+          else
+            TAG_LABEL=$(date +"%Y-%m-%d")
+          fi
+          echo "commit_hash=$COMMIT_HASH" >> $GITHUB_OUTPUT
+          echo "tag_label=$TAG_LABEL" >> $GITHUB_OUTPUT
+
+      - name: Create and push tag
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh api repos/${{ github.repository }}/git/refs \
+            -f ref="refs/tags/${{ steps.vars.outputs.tag_label }}" \
+            -f sha="${{ steps.vars.outputs.commit_hash }}"

@@ -2,9 +2,6 @@ name: build and test
 
 on:
   push:
-    tags:
-      - v*
-      # - 'v[0-9]+-[0-9]+-[0-9]+'
     branches:
       - 'main'
   pull_request:
@@ -57,7 +54,7 @@ jobs:
           provenance: false
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          build-args: VERSION=${{ github.ref_type == 'tag' && github.ref || github.sha }}
+          build-args: VERSION=${{ github.sha }}
 
   test:
     runs-on: ubuntu-latest
@@ -77,10 +74,3 @@ jobs:
           IMAGE_NAME=${GITHUB_REPOSITORY@L}
           docker pull ${{ env.REGISTRY }}/${IMAGE_NAME}:${{ github.sha }}
           docker run --rm ${{ env.REGISTRY }}/${IMAGE_NAME}:${{ github.sha }}
-  release:
-    needs: test
-    if: github.ref_type == 'tag'
-    runs-on: ubuntu-latest
-    steps:
-      -
-        uses: ./.github/workflows/release.yml

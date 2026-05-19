@@ -50,22 +50,22 @@ jobs:
           IMAGE_NAME=${GITHUB_REPOSITORY@L}
           docker pull ${{ env.REGISTRY }}/${IMAGE_NAME}:${{ steps.vars.outputs.commit_hash }}
 
-      - name: Create and push tag
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh api repos/${{ github.repository }}/git/refs \
-            -f ref="refs/tags/${{ steps.vars.outputs.tag_label }}" \
-            -f sha="${{ steps.vars.outputs.commit_hash }}"
-
-      -
-        name: Extract metadata (tags, labels) for Docker
+      - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@v6.0.0
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
             type=raw,value=${{ steps.vars.outputs.tag_label }}
+
+      - name: Create and push tag
+        if: false
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh api repos/${{ github.repository }}/git/refs \
+            -f ref="refs/tags/${{ steps.vars.outputs.tag_label }}" \
+            -f sha="${{ steps.vars.outputs.commit_hash }}"
 
       - name: Tag docker image
         run:

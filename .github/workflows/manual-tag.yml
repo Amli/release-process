@@ -58,6 +58,15 @@ jobs:
             -f ref="refs/tags/${{ steps.vars.outputs.tag_label }}" \
             -f sha="${{ steps.vars.outputs.commit_hash }}"
 
+      -
+        name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v6.0.0
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=raw,value=${{ steps.vars.outputs.tag_label }}
+
       - name: Tag docker image
         run:
 

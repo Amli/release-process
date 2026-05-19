@@ -1,5 +1,5 @@
 ARG VERSION
-from debian:trixie-slim
+from alpine:3.22.4
 
 ENV VERSION=$VERSION
 CMD "echo $VERSION"

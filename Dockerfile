@@ -1,4 +1,4 @@
 FROM alpine:3.22.4
 ARG VERSION
 ENV VERSION=$VERSION
-CMD /bin/bash -c "echo $VERSION"
+CMD sh -c "echo $VERSION"

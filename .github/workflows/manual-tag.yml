@@ -71,4 +71,8 @@ jobs:
         run:
 
       - name: Create release
-        run:
+        uses: softprops/action-gh-release@v3
+        with:
+          tag_name: ${{ steps.vars.outputs.tag_label }}}
+          body: |
+            Image: ${{ steps.meta.outputs.tags }}

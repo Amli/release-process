@@ -1,5 +1,4 @@
-ARG VERSION
-from alpine:3.22.4
+FROM alpine:3.22.4
 
-ENV VERSION=$VERSION
-CMD "echo $VERSION"
+ENV VERSION
+CMD /usr/bin/bash -c "echo $VERSION"

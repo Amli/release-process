@@ -74,11 +74,10 @@ jobs:
           IMAGE_NAME=${GITHUB_REPOSITORY@L}
           docker pull ${{ env.REGISTRY }}/${IMAGE_NAME}:${{ github.sha }}
           docker run --rm ${{ env.REGISTRY }}/${IMAGE_NAME}:${{ github.sha }}
-  # release:
-  #   needs: test
-  #   if: github.ref_type == 'tag'
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     -
-  #       uses: ./.github/workflows/release.yml
-        
+  release:
+    needs: test
+    if: github.ref_type == 'tag'
+    runs-on: ubuntu-latest
+    steps:
+      -
+        uses: ./.github/workflows/release.yml

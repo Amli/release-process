@@ -54,6 +54,12 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ steps.vars.outputs.commit_hash }}
+          fetch-tags: true
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v4
 

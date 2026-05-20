@@ -90,7 +90,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release create ${{ steps.vars.outputs.git_tag }}} --notes "Image: ${{ steps.meta.outputs.tags }}" --fail-on-no-commits --latest=false --verify-tag
+          gh release create ${{ steps.vars.outputs.git_tag }} --notes "Image: ${{ steps.meta.outputs.tags }}" --fail-on-no-commits --latest=false --verify-tag
 
       - name: Validate
         run: |

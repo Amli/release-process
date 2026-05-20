@@ -78,7 +78,7 @@ jobs:
 
       - name: Tag docker image
         run: |
-          docker buildx imagetools create ${{ env.REGISTRY }}/${{ steps.vars.outputs.image_name }}:${{ steps.vars.outputs.commit_hash }} --tag ${{ steps.meta.outputs.tags }}
+          docker buildx imagetools create ${{ env.REGISTRY }}/${{ steps.vars.outputs.image_name }}:${{ steps.vars.outputs.commit_hash }} --append --tag ${{ steps.meta.outputs.tags }}
 
       - name: Create release
         env:

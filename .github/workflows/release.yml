@@ -94,6 +94,6 @@ jobs:
 
       - name: Validate
         run: |
-          IMAGE_NAME=${GITHUB_REPOSITORY@L}
-          docker pull --force ${{ env.REGISTRY }}/${{ steps.vars.outputs.image_name }}:${{ steps.vars.outputs.release_version }}
+          docker image rm --force ${{ env.REGISTRY }}/${{ steps.vars.outputs.image_name }}:${{ steps.vars.outputs.release_version }} || true
+          docker pull ${{ env.REGISTRY }}/${{ steps.vars.outputs.image_name }}:${{ steps.vars.outputs.release_version }}
           docker run --rm ${{ env.REGISTRY }}/${{ steps.vars.outputs.image_name }}:${{ steps.vars.outputs.release_version }}
